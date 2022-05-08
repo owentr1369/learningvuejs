@@ -1,38 +1,39 @@
 <template>
-  <div>
-    <TodoItem
-      v-for="todo in todos"
-      :key="todo.id"
-      :todoProps="todo"
-      v-on:item-completed="markComplete"
-      @deleteItem="deleteTodo"
-    />
-  </div>
+  <AddTodo @add-todo="addTodo" />
+  <TodoItem
+    v-for="todo in todos"
+    :key="todo.id"
+    :todoProps="todo"
+    v-on:item-completed="markComplete"
+    @deleteItem="deleteTodo"
+  />
 </template>
 
 <script>
 import { ref } from "vue";
 
 import TodoItem from "./TodoItem.vue";
+import AddTodo from "./AddTodo.vue";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "TodoList",
-  components: { TodoItem },
+  components: { TodoItem, AddTodo },
   setup() {
     const todos = ref([
       {
-        id: 1,
-        title: "Viec 1",
+        id: uuidv4(),
+        title: "Học VueJS",
         completed: false,
       },
       {
-        id: 2,
-        title: "Viec 2",
+        id: uuidv4(),
+        title: "Ôn JavaScript",
         completed: false,
       },
       {
-        id: 3,
-        title: "Viec 3",
+        id: uuidv4(),
+        title: "HTML CSS",
         completed: false,
       },
     ]);
@@ -45,10 +46,14 @@ export default {
     const deleteTodo = (id) => {
       todos.value = todos.value.filter((todo) => todo.id !== id);
     };
+    const addTodo = (newTodo) => {
+      todos.value.push(newTodo);
+    };
     return {
       todos,
       markComplete,
       deleteTodo,
+      addTodo,
     };
   },
 };
